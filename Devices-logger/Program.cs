@@ -1,3 +1,5 @@
+// Copyright (c) Jan Kubovic All rights reserved.
+// Program.cs
 
 namespace Devices_logger
 {

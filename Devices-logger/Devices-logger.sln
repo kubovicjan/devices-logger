@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Devices-logger", "Devices-logger.csproj", "{8E7F7503-9AA8-454B-883C-F948F5AC287F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesLogger", "DevicesLogger.csproj", "{8E7F7503-9AA8-454B-883C-F948F5AC287F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
