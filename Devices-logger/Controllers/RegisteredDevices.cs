@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Jan Kubovic All rights reserved.
 // RegisteredDevices.cs
 
+namespace DevicesLogger.Controllers;
 using DevicesLogger.Core;
+using DevicesLogger.CQRS.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevicesLogger.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class RegisteredDevices : CommonControllerBase
@@ -15,14 +16,14 @@ public class RegisteredDevices : CommonControllerBase
     }
 
     [HttpGet]
-    public Task<IActionResult> GetAllRegisteredDevices()
+    public async Task<IActionResult> GetAllRegisteredDevices()
     {
-        //TODO: Add implementation to controller method
-        throw new NotImplementedException();
+        var result = await Mediator.Send(new GetAllDevices.Query());
+        return Ok(result);
     }
 
     [HttpGet("{serialNumber}")]
-    public Task<IActionResult> GetRegisteredDevice([FromRoute]string serialNumber)
+    public IActionResult GetRegisteredDevice([FromRoute] string serialNumber)
     {
         //TODO: Add implementation to controller method
         throw new NotImplementedException();

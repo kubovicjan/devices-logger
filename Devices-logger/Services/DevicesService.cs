@@ -3,33 +3,77 @@
 
 namespace DevicesLogger.Services;
 
+using System.Collections.Concurrent;
 using DevicesLogger.Domain.Devices;
-using Microsoft.Extensions.Caching.Memory;
+using DevicesLogger.Domain.Measurements;
 
-public class DevicesService
+public class DevicesService : IDevicesService
 {
-    private readonly IMemoryCache _memoryCache;
+    private readonly ConcurrentDictionary<string, List<Measurement>> _messages;
+    private readonly ConcurrentDictionary<string, Device> _devices;
 
-    public DevicesService(IMemoryCache memoryCache)
+    public DevicesService()
     {
-        _memoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+        _devices = new();
+        _messages = new();
     }
 
-    public bool AddDevice()
+    public bool AddDevice(Device device)
     {
-        //TODO: Add implementation of AddDevice method
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(device);
+        if (!_devices.TryAdd(device.SerialNumber, device))
+        {
+            throw new InvalidOperationException($"Device with serialNumber {device.SerialNumber} already registered!");
+        }
+
+        _ = _messages.TryAdd(device.SerialNumber, new());
+        return true;
     }
 
-    public bool RemoveDevice()
+    public bool RemoveDevice(string serialNumber)
     {
-        //TODO: Add implementation of RemoveDevice method
-        throw new NotImplementedException();
+        var device = CheckDeviceExists(serialNumber);
+
+        var pair = new KeyValuePair<string, Device>(serialNumber, device);
+        return _devices.TryRemove(pair);
+    }
+
+    public Device GetDevice(string serialNumber)
+    {
+        var device = CheckDeviceExists(serialNumber);
+        return device!;
     }
 
     public IEnumerable<Device> GetAllDevices()
     {
-        //TODO: Add implementation of GetAllDevices method
-        throw new NotImplementedException();
+        return _devices.Values;
+    }
+
+    public bool AddMessageForDevice(string serialNumber, Measurement measurement)
+    {
+        _ = CheckDeviceExists(serialNumber);
+        _ = _messages.TryGetValue(serialNumber, out var deviceMessages);
+
+        _ = _messages.AddOrUpdate(serialNumber, deviceMessages!, (key, oldValue) =>
+        {
+            oldValue.Add(measurement);
+            return oldValue;
+        });
+
+        return true;
+    }
+
+    public IEnumerable<Measurement> GetMessagesForDevice(string serialNumber)
+    {
+        _ = CheckDeviceExists(serialNumber);
+        _ = _messages.TryGetValue(serialNumber, out var messages);
+        return messages!;
+    }
+
+    private Device CheckDeviceExists(string serialNumber)
+    {
+        return !_devices.TryGetValue(serialNumber, out var device)
+            ? throw new InvalidOperationException($"Device with {serialNumber} not found.")
+            : device;
     }
 }

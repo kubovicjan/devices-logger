@@ -10,12 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class CommonControllerBase : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    protected IMediator Mediator => _mediator;
+    protected IMediator Mediator { get; }
 
     public CommonControllerBase(IMediator mediator)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        Mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 }
