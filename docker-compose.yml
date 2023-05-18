@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  devices-logger:
+    image: devices-logger
+    build: .
+    ports:
+      - 8080:80
+      - 4430:443

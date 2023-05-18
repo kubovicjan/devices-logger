@@ -35,7 +35,12 @@ public class DevicesService : IDevicesService
         var device = CheckDeviceExists(serialNumber);
 
         var pair = new KeyValuePair<string, Device>(serialNumber, device);
-        return _devices.TryRemove(pair);
+        _devices.TryRemove(pair);
+        _messages.TryGetValue(serialNumber, out var messages);
+
+        var messagesPair = new KeyValuePair<string, List<Measurement>>(serialNumber, messages!);
+        _messages.TryRemove(messagesPair);
+        return true;
     }
 
     public Device GetDevice(string serialNumber)
@@ -49,14 +54,19 @@ public class DevicesService : IDevicesService
         return _devices.Values;
     }
 
-    public bool AddMessageForDevice(string serialNumber, Measurement measurement)
+    public bool AddMessageForDevice(Measurement measurement)
     {
-        _ = CheckDeviceExists(serialNumber);
-        _ = _messages.TryGetValue(serialNumber, out var deviceMessages);
+        ArgumentNullException.ThrowIfNull(measurement);
+        var serialNumber = measurement.SerialNumber;
+        var device = CheckDeviceExists(serialNumber);
 
+        if (!measurement!.VerifyCompatiblerDevice(device!))
+            throw new InvalidOperationException($"Mismatch between device type and message type");
+
+        _ = _messages.TryGetValue(serialNumber, out var deviceMessages);
         _ = _messages.AddOrUpdate(serialNumber, deviceMessages!, (key, oldValue) =>
         {
-            oldValue.Add(measurement);
+            oldValue.Add(measurement!);
             return oldValue;
         });
 
@@ -65,7 +75,7 @@ public class DevicesService : IDevicesService
 
     public IEnumerable<Measurement> GetMessagesForDevice(string serialNumber)
     {
-        _ = CheckDeviceExists(serialNumber);
+        CheckDeviceExists(serialNumber);
         _ = _messages.TryGetValue(serialNumber, out var messages);
         return messages!;
     }

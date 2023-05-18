@@ -13,6 +13,6 @@ public interface IDevicesService
     Device GetDevice(string serialNumber);
     IEnumerable<Device> GetAllDevices();
 
-    bool AddMessageForDevice(string serialNumber, Measurement measurement);
+    bool AddMessageForDevice(Measurement measurement);
     IEnumerable<Measurement> GetMessagesForDevice(string serialNumber);
 }

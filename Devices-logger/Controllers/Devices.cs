@@ -4,9 +4,8 @@
 namespace DevicesLogger.Controllers;
 
 using DevicesLogger.Core;
-using DevicesLogger.CQRS.Commands;
+using DevicesLogger.CQRS.Commands.Devices;
 using DevicesLogger.Domain.Devices;
-using DevicesLogger.Domain.Measurements;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +40,10 @@ public class Devices : CommonControllerBase
     [HttpDelete]
     public IActionResult UnregisterDevice(string serialNumber)
     {
-        //TODO: Add implementation here
-        throw new NotImplementedException();
+        _ = Mediator.Send(new UnregisterDevice.Command()
+        { 
+            SerialNumber = serialNumber
+        });
+        return NoContent();
     }
 }

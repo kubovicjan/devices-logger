@@ -3,11 +3,15 @@
 
 namespace DevicesLogger.Core;
 
+using DevicesLogger.Domain.Errors;
+using System.Net.Mime;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/[controller]")]
 [ApiController]
+[Produces(MediaTypeNames.Application.Json)]
+[ProducesResponseType(typeof(ErrorResponse), 400)]
+[ProducesResponseType(typeof(ErrorResponse), 500)]
 public class CommonControllerBase : ControllerBase
 {
     protected IMediator Mediator { get; }

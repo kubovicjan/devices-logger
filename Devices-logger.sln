@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33403.182
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevicesLogger", "DevicesLogger.csproj", "{8E7F7503-9AA8-454B-883C-F948F5AC287F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevicesLogger", ".\Devices-logger\DevicesLogger.csproj", "{8E7F7503-9AA8-454B-883C-F948F5AC287F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesLogger.Tests", "..\DevicesLogger.Tests\DevicesLogger.Tests.csproj", "{23402EFA-5290-4653-9D61-6F41E44AA316}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevicesLogger.Tests", ".\DevicesLogger.Tests\DevicesLogger.Tests.csproj", "{23402EFA-5290-4653-9D61-6F41E44AA316}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

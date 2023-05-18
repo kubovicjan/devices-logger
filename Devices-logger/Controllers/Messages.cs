@@ -4,8 +4,8 @@
 namespace DevicesLogger.Controllers;
 
 using DevicesLogger.Core;
-using DevicesLogger.CQRS.Commands;
-using DevicesLogger.CQRS.Queries;
+using DevicesLogger.CQRS.Commands.Messages;
+using DevicesLogger.CQRS.Queries.Messages;
 using DevicesLogger.Domain.Measurements;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +19,20 @@ public class Messages : CommonControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<Measurement>), 200)]
     public async Task<IActionResult> GetAllMessages()
     {
-        //TODO: Add implementation
-        throw new NotImplementedException();
+        var data = await Mediator.Send(new GetAllMessages.Query());
+        return Ok(data);    
     }
 
     [HttpGet("count")]
-    public async Task<IActionResult> GetAllMessagesCount
+    [ProducesResponseType(typeof(int),200)]
+    public async Task<IActionResult> GetAllMessagesCount()
+    {
+        var count = await Mediator.Send(new GetMessagesCount.Query());
+        return Ok(count);
+    }
 
     [HttpGet("{serialNumber}")]
     [ProducesResponseType(typeof(IEnumerable<Measurement>), 200)]
@@ -39,23 +45,23 @@ public class Messages : CommonControllerBase
         return Ok(data);
     }
 
-    [HttpPost("thermometer/{serialNumber}")]
-    public async Task<IActionResult> ReceiveThermometerMessage([FromRoute] string serialNumber,
-                                                [FromBody] ThermometerMeasurement message)
+    [HttpPost("thermometer")]
+    public async Task<IActionResult> ReceiveThermometerMessage([FromBody] ThermometerMeasurement message)
     {
-        _ = await Mediator.Send(new ReceiveMessage.Command
+        _ = await Mediator.Send(new ReceiveScaleMessage.Command
         {
             Measurement = message,
-            SerialNumber = serialNumber
         });
         return NoContent();
     }
 
-    [HttpPost("scale/{serialNumber}")]
-    public IActionResult ReceiveScaleMessage([FromRoute] string serialNumber,
-                                                [FromBody] ScaleMeasurement message)
+    [HttpPost("scale")]
+    public async Task<IActionResult> ReceiveScaleMessage([FromBody] ScaleMeasurement message)
     {
-        //TODO: Add implementation here
-        throw new NotImplementedException();
+        _ = await Mediator.Send(new ReceiveScaleMessage.Command
+        {
+            Measurement = message,
+        });
+        return NoContent();
     }
 }

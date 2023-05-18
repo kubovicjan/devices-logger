@@ -3,7 +3,8 @@
 
 namespace DevicesLogger.Controllers;
 using DevicesLogger.Core;
-using DevicesLogger.CQRS.Queries;
+using DevicesLogger.CQRS.Queries.Devices;
+using DevicesLogger.Domain.Devices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,13 @@ public class RegisteredDevices : CommonControllerBase
     }
 
     [HttpGet("{serialNumber}")]
+    [ProducesResponseType(typeof(Device), 200)]
     public IActionResult GetRegisteredDevice([FromRoute] string serialNumber)
     {
-        //TODO: Add implementation to controller method
-        throw new NotImplementedException();
+        var device = Mediator.Send(new GetDevice.Query()
+        {
+            SerialNumber= serialNumber
+        });
+        return Ok(device);
     }
 }

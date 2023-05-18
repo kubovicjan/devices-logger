@@ -4,6 +4,8 @@
 namespace DevicesLogger.Domain.Measurements;
 
 using System.Text.Json.Serialization;
+using DevicesLogger.Core;
+using DevicesLogger.Domain.Devices;
 using FluentValidation;
 
 [JsonDerivedType(typeof(ScaleMeasurement))]
@@ -16,10 +18,13 @@ public abstract class Measurement
     public required double Latitude { get; init; }
     public required string MeasurementUnit { get; init; }
 
+    public abstract bool VerifyCompatiblerDevice(Device device);
+
     public class MeasurementValidator : AbstractValidator<Measurement>
     {
         public MeasurementValidator()
         {
+            RuleFor(x => x.SerialNumber).NotEmpty().Length(ValidationConstants.SerialNumberLength);
             RuleFor(x => x.MeasurementUnit).NotEmpty();
             RuleFor(x => x.Longitude).InclusiveBetween(-180, 180);
             RuleFor(x => x.Latitude).InclusiveBetween(-90, 90);

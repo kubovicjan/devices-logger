@@ -16,6 +16,7 @@ public class Device
     public required string FirmwareVersion { get; init; }
     public required string Vendor { get; init; }
     public required Status Status { get; init; }
+    public required string BaseUnit { get; init; }
 
     public class DeviceValidator : AbstractValidator<Device>
     {
@@ -24,6 +25,7 @@ public class Device
             RuleFor(x => x.SerialNumber).NotEmpty().Length(ValidationConstants.SerialNumberLength);
             RuleFor(x => x.FirmwareVersion).NotEmpty();
             RuleFor(x => x.Vendor).NotEmpty().Matches(ValidationConstants.VendorRegex);
+            RuleFor(x => x.BaseUnit).NotEmpty();
         }
     }
 }

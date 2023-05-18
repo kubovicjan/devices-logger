@@ -25,10 +25,10 @@ public class GetAllDevices
             _devicesService = devicesService ?? throw new ArgumentNullException(nameof(devicesService));
         }
 
-        public Task<IEnumerable<Device>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Device>> Handle(Query request, CancellationToken cancellationToken)
         {
-            //TODO: Add implementation of GetAllDevices query
-            throw new NotImplementedException();
+            var devices = _devicesService.GetAllDevices();
+            return await Task.FromResult(devices);
         }
     }
 }

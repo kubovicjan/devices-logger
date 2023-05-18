@@ -11,20 +11,15 @@ using DevicesLogger.Services;
 using FluentValidation;
 using MediatR;
 
-public class ReceiveMessage
+public class ReceiveScaleMessage
 {
     public class Command : IRequest<bool>
     {
         public required Measurement Measurement { get; init; }
-        public required string SerialNumber { get; init; }
-
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.SerialNumber).NotEmpty()
-                                            .Length(ValidationConstants.SerialNumberLength);
-
                 RuleFor(x => x.Measurement).SetInheritanceValidator(x =>
                 {
                     x.Add(new ScaleMeasurement.ScaleMeasurementValidator());
@@ -44,8 +39,7 @@ public class ReceiveMessage
 
         public Task<bool> Handle(Command request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_devicesService.AddMessageForDevice(request.SerialNumber,
-                                                                       request.Measurement));
+            return Task.FromResult(_devicesService.AddMessageForDevice(request.Measurement));
         }
     }
 }
