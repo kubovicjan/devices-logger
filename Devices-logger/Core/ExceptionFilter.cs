@@ -43,7 +43,16 @@ public class ExceptionFilter : IAsyncActionFilter
                 response = new ErrorResponse()
                 {
                     ErrorCode = (int)ErrorCodes.InvalidInputData,
-                    ErrorMessage = vex.Errors.ToList().Select(e => e.ErrorMessage).First(),
+                    ErrorMessage = vex.Errors.ToList()?.Select(e => e.ErrorMessage)?.ToString() ?? string.Empty,
+                };
+                action.Invoke(StatusCodes.Status400BadRequest);
+                break;
+            case InvalidOperationException ioe:
+                _logger.LogError(ioe, ioe.Message);
+                response = new ErrorResponse()
+                {
+                    ErrorCode = (int)ErrorCodes.InvalidInputData,
+                    ErrorMessage = ioe.Message
                 };
                 action.Invoke(StatusCodes.Status400BadRequest);
                 break;

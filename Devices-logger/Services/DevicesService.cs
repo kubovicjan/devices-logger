@@ -83,7 +83,7 @@ public class DevicesService : IDevicesService
     private Device CheckDeviceExists(string serialNumber)
     {
         return !_devices.TryGetValue(serialNumber, out var device)
-            ? throw new InvalidOperationException($"Device with {serialNumber} not found.")
+            ? throw new InvalidOperationException($"Device with serial number {serialNumber} not found.")
             : device;
     }
 }
