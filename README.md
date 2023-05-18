@@ -69,7 +69,7 @@ curl --location 'https://localhost:8080/api/devices/scale' \
 
 3. To display count of received message by all devices:
  ```
- curl --location 'https://localhost:8080/api/registeredDevicescount' \
+ curl --location 'https://localhost:8080/api/registeredDevices/count' \
 --header 'Content-Type: application/json'
  ```
 
