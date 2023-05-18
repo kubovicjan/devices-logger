@@ -15,8 +15,8 @@
 ## Open API specification
 Swagger is accessible on:
 
-1. https://localhost:4430/swagger
-2. https://localhost:8080/swagger
+1. [https, port 4430](https://localhost:4430/swagger)
+2. [http, port 8080](http://localhost:8080/swagger)
 
 ## Structure
 Program is written as REST API. It exposes several endpoints:
