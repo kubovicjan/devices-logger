@@ -3,6 +3,7 @@
 
 namespace DevicesLogger.Core;
 
+using System.Linq;
 using System.Threading.Tasks;
 using DevicesLogger.Domain.Errors;
 using FluentValidation;
@@ -43,7 +44,7 @@ public class ExceptionFilter : IAsyncActionFilter
                 response = new ErrorResponse()
                 {
                     ErrorCode = (int)ErrorCodes.InvalidInputData,
-                    ErrorMessage = vex.Errors.ToList()?.Select(e => e.ErrorMessage)?.ToString() ?? string.Empty,
+                    ErrorMessage = string.Join(Environment.NewLine, vex.Errors.ToList().Select(e => e.ErrorMessage))
                 };
                 action.Invoke(StatusCodes.Status400BadRequest);
                 break;
