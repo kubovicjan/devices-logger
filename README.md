@@ -40,7 +40,7 @@ Once device is registered. It can receive message base on it´s type
 ## Example of usage
 1. Register scale device:
 ```
-curl --location 'https://localhost:8080/api/devices/scale' \
+curl --location 'http://localhost:8080/api/devices/scale' \
 --header 'Content-Type: application/json' \
 --data '{
   "serialNumber": "0123456789",
@@ -55,7 +55,7 @@ curl --location 'https://localhost:8080/api/devices/scale' \
 
 2. Device is ready to receive message(s):
  ```
- curl --location 'https://localhost:8080/api/messages/scale' \
+ curl --location 'http://localhost:8080/api/messages/scale' \
 --header 'Content-Type: application/json' \
 --data '{
   "serialNumber": "0123456789",
@@ -69,18 +69,18 @@ curl --location 'https://localhost:8080/api/devices/scale' \
 
 3. To display count of received message by all devices:
  ```
- curl --location 'https://localhost:8080/api/registeredDevices/count' \
+ curl --location 'http://localhost:8080/api/registeredDevices/count' \
 --header 'Content-Type: application/json'
  ```
 
 4. To display all registered devices:
  ```
- curl --location 'https://localhost:8080/api/registeredDevices' \
+ curl --location 'http://localhost:8080/api/registeredDevices' \
 --header 'Content-Type: application/json'
  ```
 
  4. To display registered device deviceSerialNumber:
  ```
- curl --location 'https://localhost:8080/api/registeredDevices/deviceSerialNumber' \
+ curl --location 'http://localhost:8080/api/registeredDevices/deviceSerialNumber' \
 --header 'Content-Type: application/json'
  ```
